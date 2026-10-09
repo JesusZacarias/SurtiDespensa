@@ -29,3 +29,7 @@ las reglas operativas aplicables al repositorio.
 
 Última actualización general: **9 de octubre de 2026**.
 
+## Material relacionado
+
+- [`../presentations/anteproyecto-mvp-surtidespensa.html`](../presentations/anteproyecto-mvp-surtidespensa.html):
+  presentación ejecutiva y visual del anteproyecto del MVP.

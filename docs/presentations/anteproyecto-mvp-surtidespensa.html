@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Anteproyecto ejecutivo del MVP de SurtiDespensa">
+  <title>Anteproyecto MVP | SurtiDespensa</title>
+  <style>
+    :root {
+      --navy: #17324d;
+      --navy-soft: #294b67;
+      --green: #5f8f72;
+      --green-dark: #3f6f56;
+      --green-pale: #eaf2ed;
+      --cream: #f7f4ed;
+      --sand: #e8dfd0;
+      --gold: #d99a44;
+      --ink: #24313c;
+      --muted: #667681;
+      --white: #ffffff;
+      --danger: #b8584f;
+      --shadow: 0 18px 50px rgba(23, 50, 77, .10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, rgba(95, 143, 114, .16), transparent 28rem),
+        linear-gradient(180deg, #fcfbf8 0%, var(--cream) 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.58;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { color: var(--navy); line-height: 1.15; }
+    h1 { max-width: 850px; margin-bottom: 18px; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.06em; }
+    h2 { margin-bottom: 20px; font-size: clamp(1.65rem, 3vw, 2.35rem); letter-spacing: -.035em; }
+    h3 { margin-bottom: 10px; font-size: 1.06rem; }
+    p { color: var(--muted); }
+
+    .shell { width: min(1160px, calc(100% - 36px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(23, 50, 77, .08);
+      background: rgba(252, 251, 248, .88);
+      backdrop-filter: blur(14px);
+    }
+    .topbar .shell { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--navy); font-weight: 800; letter-spacing: -.02em; }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: var(--white);
+      background: linear-gradient(145deg, var(--green), var(--green-dark));
+      box-shadow: 0 9px 24px rgba(63, 111, 86, .24);
+    }
+    .brand-mark svg { width: 24px; height: 24px; }
+    nav { display: flex; gap: 20px; color: var(--muted); font-size: .88rem; font-weight: 650; }
+    nav a:hover { color: var(--green-dark); }
+
+    .hero { padding: 92px 0 70px; }
+    .eyebrow, .tag, .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .eyebrow { padding: 8px 12px; margin-bottom: 24px; color: var(--green-dark); background: var(--green-pale); }
+    .hero-copy { max-width: 760px; font-size: 1.15rem; }
+    .hero-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: 40px; align-items: end; }
+    .hero-panel {
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius: var(--radius);
+      color: var(--white);
+      background: linear-gradient(145deg, var(--navy), var(--navy-soft));
+      box-shadow: var(--shadow);
+    }
+    .hero-panel p { color: rgba(255,255,255,.68); }
+    .hero-panel strong { display: block; margin-bottom: 7px; font-size: 1.9rem; }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+    .meta div { padding-top: 14px; border-top: 1px solid rgba(255,255,255,.14); font-size: .84rem; color: rgba(255,255,255,.68); }
+
+    section { padding: 70px 0; }
+    .section-head { max-width: 740px; margin-bottom: 30px; }
+    .kicker { color: var(--green-dark); font-size: .78rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .grid-2, .grid-3, .grid-4 { display: grid; gap: 18px; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .card {
+      padding: 25px;
+      border: 1px solid rgba(23, 50, 77, .09);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.84);
+      box-shadow: 0 10px 30px rgba(23,50,77,.05);
+    }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      color: var(--white);
+      background: var(--green);
+      font-weight: 850;
+    }
+    .quote {
+      padding: 35px;
+      border-left: 5px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: var(--navy);
+      color: var(--white);
+      font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+      font-weight: 680;
+      line-height: 1.4;
+    }
+
+    .scope-list, .plain-list { margin: 0; padding: 0; list-style: none; }
+    .scope-list li, .plain-list li { position: relative; padding: 10px 0 10px 29px; border-bottom: 1px solid rgba(23,50,77,.07); }
+    .scope-list li:last-child, .plain-list li:last-child { border-bottom: 0; }
+    .scope-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      color: var(--green-dark);
+      font-weight: 900;
+    }
+    .plain-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+    .flow-step { position: relative; min-height: 154px; padding: 22px; border-radius: 18px; background: var(--white); border: 1px solid rgba(23,50,77,.09); }
+    .flow-step:not(:last-child)::after { content: "›"; position: absolute; right: -12px; top: 50%; z-index: 2; color: var(--green); font-size: 2rem; font-weight: 900; transform: translateY(-50%); }
+    .flow-step small { color: var(--green-dark); font-weight: 850; text-transform: uppercase; }
+
+    .architecture { padding: 34px; border-radius: var(--radius); background: linear-gradient(150deg, var(--navy), #203f5b); box-shadow: var(--shadow); }
+    .architecture h2, .architecture h3 { color: var(--white); }
+    .architecture p { color: rgba(255,255,255,.7); }
+    .layers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 25px; }
+    .layer { padding: 21px; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.07); }
+    .layer b { display: block; margin-bottom: 8px; color: #cce5d4; }
+    .layer span { color: rgba(255,255,255,.7); font-size: .88rem; }
+
+    .status { padding: 6px 9px; letter-spacing: .045em; }
+    .done { color: #2f6847; background: #dff0e5; }
+    .doing { color: #885b15; background: #fff0cf; }
+    .pending { color: #667681; background: #edf0f2; }
+    .later { color: #77505f; background: #f4e7ec; }
+    .progress-card { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: start; }
+    .progress-card + .progress-card { margin-top: 13px; }
+    .check-circle { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: var(--white); background: var(--green); font-weight: 900; }
+    .check-circle.pending-icon { color: var(--muted); background: #edf0f2; }
+    .progress-card p { margin-bottom: 0; font-size: .91rem; }
+
+    .timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .week { position: relative; padding: 27px 23px; border-radius: var(--radius); background: var(--white); border: 1px solid rgba(23,50,77,.09); }
+    .week-label { display: inline-block; margin-bottom: 18px; color: var(--green-dark); font-size: .78rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    .week ul { padding-left: 18px; color: var(--muted); font-size: .9rem; }
+    .week li + li { margin-top: 7px; }
+
+    .test-pyramid { display: grid; grid-template-columns: 1fr 1.15fr 1.3fr; gap: 12px; align-items: end; max-width: 850px; margin: 30px auto 0; }
+    .test-level { padding: 25px 20px; border-radius: 18px 18px 5px 5px; text-align: center; }
+    .test-level:nth-child(1) { min-height: 150px; color: var(--white); background: var(--navy); }
+    .test-level:nth-child(2) { min-height: 190px; background: var(--green-pale); }
+    .test-level:nth-child(3) { min-height: 230px; background: #eadfce; }
+    .test-level b { display: block; margin-bottom: 8px; }
+    .test-level span { font-size: .86rem; opacity: .8; }
+
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 16px; background: var(--white); }
+    th, td { padding: 15px 17px; text-align: left; border-bottom: 1px solid rgba(23,50,77,.08); vertical-align: top; }
+    th { color: var(--navy); background: var(--green-pale); font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; }
+    td { color: var(--muted); font-size: .9rem; }
+
+    .decision { border-top: 4px solid var(--green); }
+    .metric { font-size: 2rem; color: var(--navy); font-weight: 850; letter-spacing: -.04em; }
+    .metric-label { color: var(--muted); font-size: .86rem; }
+
+    footer { margin-top: 60px; padding: 42px 0; color: rgba(255,255,255,.66); background: var(--navy); }
+    footer .shell { display: flex; justify-content: space-between; gap: 30px; align-items: center; }
+    footer strong { color: var(--white); }
+
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .hero-grid, .grid-3, .grid-4, .timeline { grid-template-columns: 1fr 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .flow-step { min-height: auto; }
+      .flow-step:not(:last-child)::after { content: "⌄"; right: 50%; top: auto; bottom: -24px; transform: translateX(50%); }
+      .layers { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 620px) {
+      .hero { padding-top: 60px; }
+      .hero-grid, .grid-2, .grid-3, .grid-4, .timeline, .layers, .test-pyramid { grid-template-columns: 1fr; }
+      .meta { grid-template-columns: 1fr; }
+      .progress-card { grid-template-columns: auto 1fr; }
+      .progress-card .status { grid-column: 2; justify-self: start; }
+      footer .shell { display: block; }
+    }
+
+    @media print {
+      .topbar { position: static; }
+      body { background: white; }
+      section, .card, .week, .architecture { break-inside: avoid; }
+      nav { display: none; }
+      .hero { padding-top: 45px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="#inicio" aria-label="SurtiDespensa, inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 10h16l-1.2 9H5.2L4 10Z"/><path d="M8 10c0-3 1.8-5 4-5s4 2 4 5M8 14h.01M12 14h.01M16 14h.01" stroke-linecap="round"/></svg>
+        </span>
+        <span>SurtiDespensa</span>
+      </a>
+      <nav aria-label="Navegación del documento">
+        <a href="#alcance">Alcance</a>
+        <a href="#arquitectura">Arquitectura</a>
+        <a href="#plan">Plan MVP</a>
+        <a href="#calidad">Calidad</a>
+        <a href="#aceptacion">Aceptación</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <span class="eyebrow">Anteproyecto de software · MVP</span>
+          <h1>Planear la semana y surtir la despensa, sin olvidar nada.</h1>
+          <p class="hero-copy">SurtiDespensa transforma recetas elegidas para cada día en una lista de compras clara, consolidada y trazable, ajustada al número real de personas.</p>
+        </div>
+        <aside class="hero-panel">
+          <strong>Versión 0.1</strong>
+          <p>Documento ejecutivo para alineación del equipo de producto y desarrollo.</p>
+          <div class="meta">
+            <div><b>Plataforma inicial</b><br>Android</div>
+            <div><b>Horizonte</b><br>4 semanas</div>
+            <div><b>Frontend</b><br>Flutter</div>
+            <div><b>Datos</b><br>SQLite + Supabase</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">01 · Resumen ejecutivo</p>
+          <h2>Una solución local primero, preparada para crecer</h2>
+          <p>El producto prioriza una experiencia rápida sin registro obligatorio. Los datos viven primero en el dispositivo y, cuando el usuario decide crear una cuenta, pueden respaldarse y sincronizarse.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card"><div class="number">P</div><h3>Problema</h3><p>Decidir qué cocinar y recordar todos los ingredientes exige esfuerzo cada semana; las listas manuales suelen quedar incompletas.</p></article>
+          <article class="card"><div class="number">S</div><h3>Solución</h3><p>Elegir recetas, indicar personas y días, y generar automáticamente una lista que explique de dónde proviene cada cantidad.</p></article>
+          <article class="card"><div class="number">V</div><h3>Valor</h3><p>Menos olvidos, menor tiempo de planeación, compras más precisas y un historial útil para futuras recomendaciones.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <blockquote class="quote">“El usuario no debería escribir nuevamente lo que ya sabe la receta; debería elegir qué cocinar y dejar que la aplicación prepare la compra.”</blockquote>
+      </div>
+    </section>
+
+    <section id="alcance">
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">02 · Objetivos y alcance</p>
+          <h2>Objetivo general del MVP</h2>
+          <p>Validar que una persona pueda completar el ciclo receta → semana → lista → compra → historial desde Android, aun sin conexión.</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>Incluido en el MVP</h3>
+            <ul class="scope-list">
+              <li>Catálogo personal y CRUD de recetas.</li>
+              <li>Ingredientes, unidades, cantidades y porciones base.</li>
+              <li>Planeación semanal con varias comidas por día.</li>
+              <li>Desayuno, comida, cena, colación y momentos personalizados.</li>
+              <li>Comidas libres: fuera, pedido o sobras.</li>
+              <li>Repetición de recetas y ajuste de personas por ocasión.</li>
+              <li>Lista automática con consolidación y procedencia.</li>
+              <li>Productos manuales, existencias, sustituciones y compra.</li>
+              <li>Finalización, historial y confirmación de preparación.</li>
+              <li>SQLite offline y cuenta opcional para sincronización.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Posterior al MVP</h3>
+            <ul class="plain-list">
+              <li>Compartir y editar recetas colaborativamente.</li>
+              <li>Recomendaciones automáticas basadas en historial.</li>
+              <li>Detección automática avanzada de categorías.</li>
+              <li>Conversión inteligente entre unidades incompatibles.</li>
+              <li>Integraciones con supermercados o precios.</li>
+              <li>Publicación para iOS cuando exista entorno macOS.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">03 · Usuarios y experiencia</p>
+          <h2>Flujo principal</h2>
+          <p>La experiencia gira alrededor de una decisión cotidiana y debe sentirse más cercana a organizar tarjetas que a llenar formularios administrativos.</p>
+        </div>
+        <div class="flow" aria-label="Flujo principal de la aplicación">
+          <article class="flow-step"><small>01</small><h3>Crear recetas</h3><p>Nombre, porciones e ingredientes reutilizables.</p></article>
+          <article class="flow-step"><small>02</small><h3>Planear</h3><p>Arrastrar o agregar comidas a cada día y momento.</p></article>
+          <article class="flow-step"><small>03</small><h3>Generar</h3><p>Escalar y consolidar ingredientes compatibles.</p></article>
+          <article class="flow-step"><small>04</small><h3>Comprar</h3><p>Revisar existencias, sustituciones y estados.</p></article>
+          <article class="flow-step"><small>05</small><h3>Confirmar</h3><p>Cerrar la semana y alimentar el historial real.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="arquitectura">
+      <div class="shell architecture">
+        <p class="kicker" style="color:#bcdcc7">04 · Propuesta técnica</p>
+        <h2>Arquitectura pragmática por features</h2>
+        <p>Separación suficiente para probar y sustituir infraestructura sin convertir el aprendizaje en una carga. SQLite es la fuente local; Supabase sincroniza cuando corresponde.</p>
+        <div class="layers">
+          <div class="layer"><b>Presentation</b><span>Screens, widgets, controllers y ViewModels con Provider.</span></div>
+          <div class="layer"><b>Models</b><span>Reglas y objetos: Recipe, Ingredient, Quantity y planificación.</span></div>
+          <div class="layer"><b>Data</b><span>Repositorios y mapeo entre modelos, SQLite y Supabase.</span></div>
+          <div class="layer"><b>Services</b><span>Base local, autenticación, sincronización, red y preferencias.</span></div>
+        </div>
+        <div class="grid-4" style="margin-top:12px">
+          <div class="layer"><b>Flutter</b><span>Aplicación multiplataforma.</span></div>
+          <div class="layer"><b>SQLite / sqflite</b><span>Persistencia offline.</span></div>
+          <div class="layer"><b>Supabase</b><span>Auth, Postgres y respaldo.</span></div>
+          <div class="layer"><b>GoRouter + Provider</b><span>Navegación y estado.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plan">
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">05 · Estado y trabajo faltante</p>
+          <h2>Ruta de construcción del MVP</h2>
+          <p>El orden reduce retrabajo: terminamos un recorrido vertical completo antes de abrir el siguiente módulo.</p>
+        </div>
+
+        <div class="card progress-card"><div class="check-circle">✓</div><div><h3>Base del proyecto</h3><p>Modelos iniciales, validaciones, navegación, Provider, formulario y repositorio temporal en memoria.</p></div><span class="status done">Completado</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">1</div><div><h3>Cerrar el flujo actual de recetas</h3><p>Recargar el catálogo al volver del formulario, agregar estados de guardado/error y cubrir crear/listar con una prueba de integración de widgets.</p></div><span class="status doing">Siguiente</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">2</div><div><h3>Persistencia SQLite y CRUD</h3><p>Diseñar tablas y migraciones; implementar crear, leer, editar y eliminar recetas e ingredientes sin perder datos al cerrar la app.</p></div><span class="status pending">Pendiente</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">3</div><div><h3>Planificador semanal</h3><p>Semana, día, momento, comida libre, receta repetida, porciones por evento y reordenamiento accesible.</p></div><span class="status pending">Pendiente</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">4</div><div><h3>Motor de lista de compras</h3><p>Escalado por porciones, consolidación por ingrediente/unidad, desglose de procedencia, artículos manuales y existencias.</p></div><span class="status pending">Pendiente</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">5</div><div><h3>Compra e historial</h3><p>Marcar productos, registrar sustituciones, finalizar una lista y confirmar qué comidas realmente se prepararon.</p></div><span class="status pending">Pendiente</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">6</div><div><h3>Cuenta y sincronización opcional</h3><p>Supabase Auth, respaldo individual, recuperación y políticas: cualquier red, solo Wi-Fi o manual; resolución básica de conflictos.</p></div><span class="status pending">Pendiente</span></div>
+        <div class="card progress-card"><div class="check-circle pending-icon">7</div><div><h3>Cierre visual y publicación Android</h3><p>Sistema visual, accesibilidad, estados vacíos/error, icono, capturas, privacidad, firma, pruebas finales y ficha de Google Play.</p></div><span class="status pending">Pendiente</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">06 · Plan propuesto</p>
+          <h2>Cuatro semanas de entregas verticales</h2>
+          <p>Estimación de referencia para un equipo pequeño. El alcance se protege priorizando primero el uso local completo.</p>
+        </div>
+        <div class="timeline">
+          <article class="week"><span class="week-label">Semana 1</span><h3>Recetas completas</h3><ul><li>Recarga del catálogo.</li><li>CRUD y SQLite.</li><li>Pruebas unitarias y de widgets.</li><li>Ajuste visual del catálogo/formulario.</li></ul></article>
+          <article class="week"><span class="week-label">Semana 2</span><h3>Planeación</h3><ul><li>Modelo semanal.</li><li>Momentos y comidas libres.</li><li>Porciones por evento.</li><li>Interacción de mover/reordenar.</li></ul></article>
+          <article class="week"><span class="week-label">Semana 3</span><h3>Compra e historial</h3><ul><li>Generación y consolidación.</li><li>Procedencia de cantidades.</li><li>Estados y productos manuales.</li><li>Finalización y confirmación.</li></ul></article>
+          <article class="week"><span class="week-label">Semana 4</span><h3>Sincronizar y liberar</h3><ul><li>Auth y sincronización opcional.</li><li>QA, accesibilidad y rendimiento.</li><li>Identidad visual y assets.</li><li>Build firmado y Play Console.</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">07 · Diseño visual y UX</p>
+          <h2>Una interfaz doméstica, clara y confiable</h2>
+        </div>
+        <div class="grid-4">
+          <article class="card decision"><h3>Sistema visual</h3><p>Paleta verde, azul marino y fondos cálidos; tipografía consistente, espaciado y componentes reutilizables.</p></article>
+          <article class="card decision"><h3>Estados completos</h3><p>Carga, vacío, éxito, error, sin red y sincronización pendiente en cada flujo importante.</p></article>
+          <article class="card decision"><h3>Accesibilidad</h3><p>Contraste, objetivos táctiles de 48 px, etiquetas semánticas, teclado y tamaños de texto escalables.</p></article>
+          <article class="card decision"><h3>Validación UX</h3><p>Prototipo y prueba rápida con usuarios antes de pulir animaciones o funciones secundarias.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="calidad">
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">08 · Estrategia de calidad</p>
+          <h2>Pruebas integradas al desarrollo</h2>
+          <p>Cada feature se considera terminada solo si incluye comportamiento, persistencia, interfaz y pruebas proporcionales a su riesgo.</p>
+        </div>
+        <div class="test-pyramid">
+          <div class="test-level"><b>Flujos críticos</b><span>Crear receta → planear → generar → finalizar.</span></div>
+          <div class="test-level"><b>Widget e integración</b><span>Formularios, navegación, estados y SQLite.</span></div>
+          <div class="test-level"><b>Unitarias</b><span>Validaciones, escalado, consolidación, historial y sincronización.</span></div>
+        </div>
+        <div class="grid-3" style="margin-top:28px">
+          <article class="card"><h3>En cada entrega</h3><p><code>flutter analyze</code>, <code>flutter test</code> y prueba manual del criterio de aceptación.</p></article>
+          <article class="card"><h3>Antes de liberar</h3><p>Pruebas en Android real, modo avión, reinicio de app, base con volumen y redes intermitentes.</p></article>
+          <article class="card"><h3>Calidad visual</h3><p>Revisión en pantallas pequeñas/grandes, texto aumentado, temas y capturas de regresión clave.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">09 · Datos y seguridad</p>
+          <h2>Principios no funcionales</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card"><h3>Offline first</h3><p>Las operaciones esenciales funcionan sin internet. SQLite conserva el estado y una cola registra cambios por sincronizar.</p></article>
+          <article class="card"><h3>Privacidad</h3><p>Cuenta opcional, mínimos datos personales, transporte cifrado, RLS en Supabase y política pública comprensible.</p></article>
+          <article class="card"><h3>Confiabilidad</h3><p>Migraciones versionadas, borrado lógico para sincronización, auditoría básica y manejo visible de conflictos.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">10 · Riesgos</p>
+          <h2>Riesgos y respuesta propuesta</h2>
+        </div>
+        <table>
+          <thead><tr><th>Riesgo</th><th>Impacto</th><th>Mitigación</th></tr></thead>
+          <tbody>
+            <tr><td>Alcance excesivo para cuatro semanas</td><td>Retraso del MVP</td><td>Congelar recomendaciones, colaboración e iOS; liberar primero el ciclo local.</td></tr>
+            <tr><td>Complejidad de sincronización offline</td><td>Pérdida o duplicación de datos</td><td>IDs UUID, timestamps, cola de cambios, borrado lógico y reglas documentadas de conflicto.</td></tr>
+            <tr><td>Unidades incompatibles</td><td>Lista de compra incorrecta</td><td>Consolidar solo unidades compatibles; mostrar renglones separados cuando no lo sean.</td></tr>
+            <tr><td>Interacción drag & drop poco accesible</td><td>Usuarios bloqueados</td><td>Ofrecer también acciones “Mover a…” y “Cambiar día”.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="aceptacion">
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">11 · Criterios de aceptación</p>
+          <h2>Definición de MVP terminado</h2>
+        </div>
+        <div class="grid-2">
+          <article class="card"><ul class="scope-list"><li>Los datos persisten después de cerrar y abrir la app.</li><li>Se pueden crear, editar y eliminar recetas válidas.</li><li>Una semana admite varias comidas, repeticiones y porciones distintas.</li><li>La lista escala cantidades y explica cada procedencia.</li><li>La compra puede completarse totalmente sin conexión.</li></ul></article>
+          <article class="card"><ul class="scope-list"><li>El historial refleja listas cerradas y comidas confirmadas.</li><li>La sincronización opcional no bloquea el uso local.</li><li>No existen errores críticos en los flujos principales.</li><li>Análisis y suite automatizada pasan en CI/local.</li><li>APK firmado, privacidad y ficha de Play Store están listos.</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-head">
+          <p class="kicker">12 · Indicadores y entregables</p>
+          <h2>Cómo mediremos la primera versión</h2>
+        </div>
+        <div class="grid-4">
+          <article class="card"><div class="metric">≤ 5 min</div><div class="metric-label">para planear una semana existente</div></article>
+          <article class="card"><div class="metric">100%</div><div class="metric-label">del ciclo principal disponible offline</div></article>
+          <article class="card"><div class="metric">0</div><div class="metric-label">errores críticos abiertos al liberar</div></article>
+          <article class="card"><div class="metric">1 APK</div><div class="metric-label">firmado y listo para prueba cerrada</div></article>
+        </div>
+        <div class="grid-3" style="margin-top:18px">
+          <article class="card"><h3>Producto</h3><p>Aplicación Android, base SQLite, backend Supabase, assets y configuración.</p></article>
+          <article class="card"><h3>Calidad</h3><p>Suite automatizada, matriz de prueba manual, incidencias y evidencia de aceptación.</p></article>
+          <article class="card"><h3>Operación</h3><p>README técnico breve, esquema de datos, política de privacidad y guía de publicación.</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <div><strong>SurtiDespensa</strong><br><span>Anteproyecto ejecutivo del MVP</span></div>
+      <div>Documento vivo · Actualizado el 9 de octubre de 2026</div>
+    </div>
+  </footer>
+</body>
+</html>
